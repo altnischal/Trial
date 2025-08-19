@@ -5187,4 +5187,405 @@ function initChatWidget() {
       </section>
   
       <!-- Portfolio Section -->
+        // Data Structures
+const testimonials = [
+  {
+    id: 1,
+    text: "Nischal developed our AI-powered analytics dashboard that increased our team's efficiency by 40%. His technical expertise and problem-solving skills are exceptional.",
+    author: "Sarah Chen",
+    position: "CTO, TechGrowth Inc",
+    image: "assets/testimonials/sarah.jpg",
+    rating: 5
+  },
+  {
+    id: 2,
+    text: "Working with Nischal on our machine learning infrastructure was a game-changer. His deep understanding of both frontend and backend technologies made the integration seamless.",
+    author: "David Miller",
+    position: "Lead Engineer, AI Solutions",
+    image: "assets/testimonials/david.jpg",
+    rating: 5
+  },
+  {
+    id: 3,
+    text: "Nischal's expertise in computer vision helped us implement a cutting-edge security system. His attention to detail and commitment to quality are impressive.",
+    author: "Emily Rodriguez",
+    position: "Security Systems Director",
+    image: "assets/testimonials/emily.jpg",
+    rating: 5
+  }
+];
+
+const caseStudies = [
+  {
+    id: 1,
+    title: "AI-Powered Healthcare Diagnostics",
+    summary: "Developed a machine learning system for early disease detection",
+    image: "assets/cases/healthcare-ai.jpg",
+    details: {
+      challenge: "Create an accurate, real-time disease detection system using medical imaging",
+      solution: "Implemented deep learning models with 97% accuracy using TensorFlow",
+      impact: "Reduced diagnosis time by 60% and improved early detection rates",
+      technologies: ["Python", "TensorFlow", "OpenCV", "React", "Node.js"]
+    }
+  },
+  {
+    id: 2,
+    title: "Smart City Traffic Management",
+    summary: "IoT-based traffic optimization system",
+    image: "assets/cases/smart-traffic.jpg",
+    details: {
+      challenge: "Optimize traffic flow in high-congestion urban areas",
+      solution: "Developed IoT network with real-time analytics and predictive modeling",
+      impact: "30% reduction in average commute times",
+      technologies: ["IoT", "Python", "AWS", "Machine Learning", "React"]
+    }
+  }
+];
+
+const timelineEvents = [
+  {
+    id: 1,
+    date: "2024 - Present",
+    title: "Senior Software Engineer",
+    company: "AI Solutions Inc",
+    description: "Leading AI integration projects and developing scalable solutions",
+    technologies: ["Python", "TensorFlow", "React", "Node.js", "AWS"]
+  },
+  {
+    id: 2,
+    date: "2023 - 2024",
+    title: "Machine Learning Engineer",
+    company: "Tech Innovations Lab",
+    description: "Developed and deployed machine learning models for production",
+    technologies: ["Python", "PyTorch", "Docker", "Kubernetes"]
+  }
+];
+
+const certificates = [
+  {
+    id: 1,
+    title: "AWS Certified Solutions Architect",
+    issuer: "Amazon Web Services",
+    date: "2024",
+    image: "assets/certificates/aws-architect.png",
+    verification: "AWS-123456"
+  },
+  {
+    id: 2,
+    title: "TensorFlow Developer Certificate",
+    issuer: "Google",
+    date: "2024",
+    image: "assets/certificates/tensorflow-dev.png",
+    verification: "TF-789012"
+  }
+];
+
+// Initialize all sections
+function initializeAllSections() {
+  initTestimonials();
+  initCaseStudies();
+  initTimeline();
+  initCertifications();
+  initNewsletter();
+  initResources();
+  initChatWidget();
+  initializeAnalytics();
+  registerServiceWorker();
+}
+
+// Testimonials Section
+function initTestimonials() {
+  let currentTestimonial = 0;
+  const container = document.querySelector('.testimonial-cards');
+  const dotsContainer = document.querySelector('.nav-dots');
+
+  // Create testimonial cards
+  testimonials.forEach((testimonial, index) => {
+    const card = createTestimonialCard(testimonial);
+    container.appendChild(card);
+    
+    // Create navigation dot
+    const dot = document.createElement('button');
+    dot.className = `nav-dot ${index === 0 ? 'active' : ''}`;
+    dot.setAttribute('aria-label', `Go to testimonial ${index + 1}`);
+    dot.addEventListener('click', () => showTestimonial(index));
+    dotsContainer.appendChild(dot);
+  });
+
+  // Show first testimonial
+  showTestimonial(0);
+
+  // Navigation handlers
+  document.getElementById('prevTestimonial').addEventListener('click', () => {
+    showTestimonial((currentTestimonial - 1 + testimonials.length) % testimonials.length);
+  });
+
+  document.getElementById('nextTestimonial').addEventListener('click', () => {
+    showTestimonial((currentTestimonial + 1) % testimonials.length);
+  });
+
+  // Auto-rotate testimonials
+  setInterval(() => {
+    showTestimonial((currentTestimonial + 1) % testimonials.length);
+  }, 5000);
+
+  function showTestimonial(index) {
+    const cards = document.querySelectorAll('.testimonial-card');
+    const dots = document.querySelectorAll('.nav-dot');
+
+    cards.forEach((card, i) => {
+      card.classList.toggle('active', i === index);
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+
+    currentTestimonial = index;
+    trackEvent('Testimonials', 'View', `Testimonial ${index + 1}`);
+  }
+}
+
+function createTestimonialCard(testimonial) {
+  const card = document.createElement('div');
+  card.className = 'testimonial-card';
+  card.innerHTML = `
+    <div class="testimonial-content">
+      <div class="rating">
+        ${Array(testimonial.rating).fill('★').join('')}
+      </div>
+      <p>${testimonial.text}</p>
+      <div class="testimonial-author">
+        <img src="${testimonial.image}" alt="${testimonial.author}" class="author-image">
+        <div class="author-info">
+          <h4>${testimonial.author}</h4>
+          <p>${testimonial.position}</p>
+        </div>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+// Case Studies Section
+function initCaseStudies() {
+  const container = document.querySelector('.case-studies-grid');
+  
+  caseStudies.forEach(study => {
+    const card = createCaseStudyCard(study);
+    container.appendChild(card);
+  });
+}
+
+function createCaseStudyCard(study) {
+  const card = document.createElement('div');
+  card.className = 'case-study-card';
+  card.innerHTML = `
+    <img src="${study.image}" alt="${study.title}" loading="lazy">
+    <div class="case-study-content">
+      <h3>${study.title}</h3>
+      <p>${study.summary}</p>
+      <button class="expand-btn" data-case-id="${study.id}">
+        <span class="expand-text">Read Case Study</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div id="details-${study.id}" class="case-details">
+        <h4>Challenge</h4>
+        <p>${study.details.challenge}</p>
+        <h4>Solution</h4>
+        <p>${study.details.solution}</p>
+        <h4>Impact</h4>
+        <p>${study.details.impact}</p>
+        <div class="tech-stack">
+          ${study.details.technologies.map(tech => `<span class="tech-badge">${tech}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+// Timeline Section
+function initTimeline() {
+  const container = document.querySelector('.timeline-container');
+  
+  timelineEvents.forEach(event => {
+    const item = createTimelineItem(event);
+    container.appendChild(item);
+  });
+}
+
+function createTimelineItem(event) {
+  const item = document.createElement('div');
+  item.className = 'timeline-item';
+  item.innerHTML = `
+    <div class="timeline-content" data-aos="fade-up">
+      <div class="timeline-date">${event.date}</div>
+      <h3>${event.title}</h3>
+      <h4>${event.company}</h4>
+      <p>${event.description}</p>
+      <div class="tech-stack">
+        ${event.technologies.map(tech => `<span class="tech-badge">${tech}</span>`).join('')}
+      </div>
+    </div>
+  `;
+  return item;
+}
+
+// Certifications Section
+function initCertifications() {
+  const container = document.querySelector('.certifications-grid');
+  
+  certificates.forEach(cert => {
+    const card = createCertificateCard(cert);
+    container.appendChild(card);
+  });
+}
+
+function createCertificateCard(cert) {
+  const card = document.createElement('div');
+  card.className = 'certificate-card';
+  card.innerHTML = `
+    <img src="${cert.image}" alt="${cert.title}" loading="lazy">
+    <div class="certificate-content">
+      <h3>${cert.title}</h3>
+      <p>${cert.issuer}</p>
+      <p class="cert-date">Issued: ${cert.date}</p>
+      <a href="#verify" class="verify-link" data-cert="${cert.verification}">
+        Verify Certificate
+      </a>
+    </div>
+  `;
+  return card;
+}
+
+// Newsletter Section
+function initNewsletter() {
+  const form = document.getElementById('newsletterForm');
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('newsletterEmail').value;
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      showNotification('Thanks for subscribing!', 'success');
+      trackEvent('Newsletter', 'Subscribe', email);
+      form.reset();
+    } catch (error) {
+      showNotification('Subscription failed. Please try again.', 'error');
+    }
+  });
+}
+
+// Chat Widget Implementation
+function initChatWidget() {
+  const chatTrigger = document.getElementById('chatTrigger');
+  const chatWindow = document.getElementById('chatWindow');
+  const chatInput = document.getElementById('chatInput');
+  const chatMessages = document.getElementById('chatMessages');
+
+  chatTrigger.addEventListener('click', () => {
+    chatWindow.classList.toggle('active');
+    if (chatWindow.classList.contains('active')) {
+      chatInput.focus();
+      trackEvent('Chat', 'Open');
+    }
+  });
+
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      sendChatMessage();
+    }
+  });
+
+  function sendChatMessage() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+    
+    addChatMessage(message, 'user');
+    chatInput.value = '';
+    
+    // Simulate response
+    setTimeout(() => {
+      const response = generateChatResponse(message);
+      addChatMessage(response, 'bot');
+    }, 1000);
+  }
+
+  function addChatMessage(message, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chat-message ${sender}`;
+    messageDiv.textContent = message;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function generateChatResponse(message) {
+    const responses = {
+      'hello': 'Hi there! How can I help you today?',
+      'portfolio': 'You can check out my recent projects in the portfolio section above.',
+      'contact': 'Feel free to reach out via email at itisnischal@gmail.com',
+      'default': 'Thanks for your message! I typically respond within 24 hours.'
+    };
+    
+    const lowerMessage = message.toLowerCase();
+    return responses[Object.keys(responses).find(key => lowerMessage.includes(key))] || responses.default;
+  }
+}
+
+// PWA Support
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('ServiceWorker registration successful');
+        })
+        .catch(error => {
+          console.log('ServiceWorker registration failed:', error);
+        });
+    });
+  }
+}
+
+// Analytics Integration
+function initializeAnalytics() {
+  // Initialize Google Analytics
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX'); // Replace with your GA tracking ID
+
+  // Track page load
+  trackEvent('Page', 'Load', window.location.pathname);
+}
+
+function trackEvent(category, action, label) {
+  if (typeof gtag === 'function') {
+    gtag('event', action, {
+      event_category: category,
+      event_label: label
+    });
+  }
+  // Console log for development
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Event:', { category, action, label });
+  }
+}
+
+// Initialize everything when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  initializeAllSections();
+});
+
+// Export functions for potential reuse
+export {
+  initializeAllSections,
+  testimonials,
+  caseStudies,
+  timelineEvents,
+  certificates
+};
  
